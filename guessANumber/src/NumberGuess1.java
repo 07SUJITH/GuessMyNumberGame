@@ -1,6 +1,6 @@
 import javax.swing.*;
 
-public class NumberGuessingGame{
+public class NumberGuess1{
     
     public static void main(String[] args) {
         int computerNumber=(int)(Math.random()*100+1);
