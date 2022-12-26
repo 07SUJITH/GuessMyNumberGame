@@ -24,7 +24,6 @@ public class GuessNumber implements ActionListener{
 	JButton eightButton;
 	JButton nineButton;
 	String inputDisplay;
-	int inputStorage;
 	static int number;
     
 	public GuessNumber(){
@@ -147,39 +146,50 @@ public class GuessNumber implements ActionListener{
     public void actionPerformed(ActionEvent e) {
     	if(e.getSource() == enterButton){
 			// game logic implementation
-			int guess = Integer.parseInt(inputDisplay);
-			if (guess == number) {
-			  guessDisplay.setText("You guessed it! The number was "+number);
-			  Random rand = new Random();
-              number = rand.nextInt(100) + 1;
-			  Timer timer = new Timer(5000, new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-					guessDisplay.setText("New Game,Guess a number 1 to 100");
+			try{
+				int guess = Integer.parseInt(inputDisplay);
+				System.out.println(number);
+				if (guess == number) {
+			  		guessDisplay.setText("You guessed it! The number was "+number);
+			  		Random rand = new Random();
+              		number = rand.nextInt(100) + 1;
+              		
+			  		Timer timer = new Timer(5000, new ActionListener() {
+                		@Override
+                		public void actionPerformed(ActionEvent e) {
+							guessDisplay.setText("New Game,Guess a number 1 to 100");
                     
-                }
-              });
-               timer.setRepeats(false);
-               timer.setCoalesce(true);
-               timer.start();
+                		}
+              		});
+               		timer.setRepeats(false);
+               		timer.setCoalesce(true);
+               		timer.start();
+				}
+				else if (guess < number) {
+			  		guessDisplay.setText("Your guess is too low. Try again.");
+				}else {
+			  		guessDisplay.setText("Your guess is too high. Try again.");
+				}
+				inputDisplay = null;
 			}
-			else if (guess < number) {
-			  guessDisplay.setText("Your guess is too low. Try again.");
-			} else {
-			  guessDisplay.setText("Your guess is too high. Try again.");
+			catch(NumberFormatException error){
+				guessDisplay.setText("Enter the number");
 			}
 		}
         else if(e.getSource() == clearButton){
-        	if(inputDisplay.length() >= 2){
-        		
-        		inputDisplay = inputDisplay.substring(0,inputDisplay.length()-1);
-        		inputStorage = Integer.parseInt(inputDisplay);
-        		guessDisplay.setText(inputDisplay);
-        	}else{
-        		inputDisplay = null;
-        		inputStorage = 0;
+        	try{
+        		if(inputDisplay.length() >= 2){
+        			inputDisplay = inputDisplay.substring(0,inputDisplay.length()-1);
+        			guessDisplay.setText(inputDisplay);
+        		}else{
+        			inputDisplay = null;
+        			guessDisplay.setText(" ");
+        		}
+        	}
+        	catch(NullPointerException error){
         		guessDisplay.setText(" ");
         	}
+        	
         }else{
         	JButton source = (JButton)e.getSource();
         	String value = source.getText();
@@ -189,8 +199,6 @@ public class GuessNumber implements ActionListener{
         		if(inputDisplay.length()<=8)
         			inputDisplay += value;	
         	}
-        	inputStorage = Integer.parseInt(inputDisplay);
-        	System.out.println(inputStorage);
         	guessDisplay.setText(inputDisplay);
         }
     }
