@@ -147,10 +147,12 @@ public class GuessNumber implements ActionListener{
     	Random rand = new Random();
         number = rand.nextInt(100) + 1;
         chances = 10;
+        jf.setEnabled(false);
         Timer timer = new Timer(5000, new ActionListener() {
         	@Override
             public void actionPerformed(ActionEvent e) {
 		    	guessDisplay.setText("New Game,Guess a number 1 to 100");
+		    	jf.setEnabled(true);
                     
             }
          });
@@ -178,7 +180,7 @@ public class GuessNumber implements ActionListener{
 				}
 				inputDisplay = null;
 				if(chances <= 0){
-					guessDisplay.setText("You Loss the game");
+					guessDisplay.setText("You Lose the game");
 					reset();
 				}	
 			}
