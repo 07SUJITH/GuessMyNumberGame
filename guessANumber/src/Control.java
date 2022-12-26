@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -21,6 +22,7 @@ public class Control implements ActionListener{
 	JButton eightButton;
 	JButton nineButton;
 	String inputDisplay;
+	int randomNum = (int)Math.random()*100+1 ;
 	int inputStorage;
     public Control(){
         jf = new JFrame("Number Guess");
@@ -114,7 +116,7 @@ public class Control implements ActionListener{
     }
     public void actionPerformed(ActionEvent e) {
     	if(e.getSource() == enterButton){
-        	/*build game logic here*/
+        	System.out.println(randomNum);
         
         }else if(e.getSource() == clearButton){
         	if(inputDisplay.length() >= 2){
