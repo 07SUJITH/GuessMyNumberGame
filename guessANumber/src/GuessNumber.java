@@ -25,6 +25,7 @@ public class GuessNumber implements ActionListener{
 	JButton nineButton;
 	String inputDisplay;
 	static int number;
+	int chances = 10;
     
 	public GuessNumber(){
 		Font myFont = new Font("Ink Free",Font.BOLD,15);
@@ -142,28 +143,33 @@ public class GuessNumber implements ActionListener{
         number = random.nextInt(100) + 1;
         new GuessNumber();
     }
+    public void reset(){
+    	Random rand = new Random();
+        number = rand.nextInt(100) + 1;
+        chances = 10;
+        Timer timer = new Timer(5000, new ActionListener() {
+        	@Override
+            public void actionPerformed(ActionEvent e) {
+		    	guessDisplay.setText("New Game,Guess a number 1 to 100");
+                    
+            }
+         });
+         timer.setRepeats(false);
+         timer.setCoalesce(true);
+         timer.start();
+    }
 	
     public void actionPerformed(ActionEvent e) {
     	if(e.getSource() == enterButton){
 			// game logic implementation
 			try{
 				int guess = Integer.parseInt(inputDisplay);
-				System.out.println(number);
+				chances -= 1;
+				System.out.println(chances);
 				if (guess == number) {
 			  		guessDisplay.setText("You guessed it! The number was "+number);
-			  		Random rand = new Random();
-              		number = rand.nextInt(100) + 1;
-              		
-			  		Timer timer = new Timer(5000, new ActionListener() {
-                		@Override
-                		public void actionPerformed(ActionEvent e) {
-							guessDisplay.setText("New Game,Guess a number 1 to 100");
-                    
-                		}
-              		});
-               		timer.setRepeats(false);
-               		timer.setCoalesce(true);
-               		timer.start();
+			  		reset();
+			  		
 				}
 				else if (guess < number) {
 			  		guessDisplay.setText("Your guess is too low. Try again.");
@@ -171,6 +177,10 @@ public class GuessNumber implements ActionListener{
 			  		guessDisplay.setText("Your guess is too high. Try again.");
 				}
 				inputDisplay = null;
+				if(chances <= 0){
+					guessDisplay.setText("You Loss the game");
+					reset();
+				}	
 			}
 			catch(NumberFormatException error){
 				guessDisplay.setText("Enter the number");
