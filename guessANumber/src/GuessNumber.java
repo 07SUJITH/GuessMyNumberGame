@@ -25,7 +25,8 @@ public class GuessNumber implements ActionListener{
 	JButton nineButton;
 	String inputDisplay;
 	static int number;
-	int chances = 10;
+	int chances = 10, clue_place = 1, last_multiplier=1;
+    boolean isprime = false;
     
 	public GuessNumber(){
 		Font myFont = new Font("Ink Free",Font.BOLD,15);
@@ -147,13 +148,13 @@ public class GuessNumber implements ActionListener{
     	Random rand = new Random();
         number = rand.nextInt(100) + 1;
         chances = 10;
+        clue_place = 0;
         jf.setEnabled(false);
         Timer timer = new Timer(5000, new ActionListener() {
         	@Override
             public void actionPerformed(ActionEvent e) {
 		    	guessDisplay.setText("New Game,Guess a number 1 to 100");
 		    	jf.setEnabled(true);
-                    
             }
          });
          timer.setRepeats(false);
@@ -171,8 +172,7 @@ public class GuessNumber implements ActionListener{
 				if (guess == number) {
 			  		guessDisplay.setText("You guessed it! The number was "+number);
 			  		reset();
-			  		
-				}
+			  	}
 				else if (guess < number) {
 			  		guessDisplay.setText("Your guess is too low. Try again.");
 				}else {
@@ -182,7 +182,44 @@ public class GuessNumber implements ActionListener{
 				if(chances <= 0){
 					guessDisplay.setText("You Lose the game");
 					reset();
-				}	
+				}
+				if(isprime != true){
+					if(clue_place == 2){
+						int flag = 0;
+						for(int i=1;i<=number/2;i++){
+							if(number%i == 0){
+								flag = 1;
+								break;
+							}
+						}
+						if(flag == 0){
+							isprime = true;	
+							System.out.println("It is a prime number");
+							chances = 4;
+						}else{
+							System.out.println("It is not a prime number");
+						}
+					}
+					else if(clue_place == 5){
+						for(int n=last_multiplier+1;n<=10;n++){
+							if(number%n == 0){
+								System.out.println(n+" is a multiplier of this number");
+								last_multiplier = n;
+								break;
+							}
+						}
+					}
+					else if(clue_place == 8){
+						for(int n=last_multiplier+1;n<=10;n++){
+							if(number%n == 0){
+								System.out.println(n+" is a multiplier of this number");
+								last_multiplier = n;
+								break;
+							}
+						}
+					}
+					clue_place++;
+				}
 			}
 			catch(NumberFormatException error){
 				guessDisplay.setText("Enter the number");
