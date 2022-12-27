@@ -12,6 +12,7 @@ import javax.swing.Timer;
 public class GuessNumber implements ActionListener{
 	JFrame jf;
 	JLabel guessDisplay;
+	JLabel timerDisplay;
 	JButton clearButton;
 	JButton zeroButton;
 	JButton oneButton;
@@ -26,15 +27,16 @@ public class GuessNumber implements ActionListener{
 	JButton nineButton;
 	JButton clueButton;
 	String inputDisplay;
+	Timer countdown;
 	static int number;
-	int chances = 10, no_clue = 5, last_divisor=1;
+	int chances = 10, no_clue = 5, last_divisor=1, count=100;
     
 	public GuessNumber(){
 		Font myFont = new Font("Ink Free",Font.BOLD,15);
 		Color color =new Color(192,192,192);
         
 		jf = new JFrame("Number Guess");
-        jf.setSize(420,510);
+        jf.setSize(420,550);
         jf.setLayout(null);
         jf.setLocation(0,0);
 		ImageIcon image =new ImageIcon("logo2.jpg");
@@ -49,6 +51,15 @@ public class GuessNumber implements ActionListener{
 		guessDisplay.setHorizontalAlignment(SwingConstants.RIGHT);
 		guessDisplay.setForeground(Color.white);
 		jf.add(guessDisplay);	
+		
+		timerDisplay = new JLabel();
+		timerDisplay.setFont(myFont);
+		timerDisplay.setBounds(95,430,285,40);
+		timerDisplay.setBackground(new Color(0,139,139));
+		timerDisplay.setOpaque(true);
+		timerDisplay.setHorizontalAlignment(SwingConstants.RIGHT);
+		timerDisplay.setForeground(Color.white);
+		jf.add(timerDisplay);	
 	
 		clearButton = new JButton("C");
 		clearButton.setBounds(30,20,60,40);
@@ -144,6 +155,23 @@ public class GuessNumber implements ActionListener{
 		jf.setVisible(true);
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jf.setResizable(false);
+		
+		countdown = new Timer(1000,new ActionListener() {
+    		@Override
+    		public void actionPerformed(ActionEvent e){
+    			timerDisplay.setText("Count down: "+count);
+    			count--;
+    			if(count<=0){
+    				timerDisplay.setText("Count down: "+count);
+    				guessDisplay.setText("You Lose the game (timeout)");
+    				countdown.stop();
+					reset();
+    			}
+    		}
+    	});	
+    	countdown.setRepeats(true);
+        countdown.setCoalesce(true);
+        countdown.start();
     }
 
     public static void main(String[] args){
@@ -156,28 +184,30 @@ public class GuessNumber implements ActionListener{
         number = rand.nextInt(100) + 1;
         chances = 10;
         no_clue = 5;
+        count=100;
         jf.setEnabled(false);
         Timer timer = new Timer(5000, new ActionListener() {
         	@Override
             public void actionPerformed(ActionEvent e) {
 		    	guessDisplay.setText("New Game,Guess a number 1 to 100");
 		    	jf.setEnabled(true);
+		    	countdown.start();
             }
          });
          timer.setRepeats(false);
          timer.setCoalesce(true);
          timer.start();
     }
-	
     public void actionPerformed(ActionEvent e) {
+    	
     	if(e.getSource() == enterButton){
 			// game logic implementation
 			try{
 				int guess = Integer.parseInt(inputDisplay);
 				chances -= 1;
-				System.out.println(chances);
 				if (guess == number) {
 			  		guessDisplay.setText("You guessed it! The number was "+number);
+			  		countdown.stop();
 			  		reset();
 			  	}
 				else if (guess < number) {
@@ -188,6 +218,7 @@ public class GuessNumber implements ActionListener{
 				inputDisplay = null;
 				if(chances <= 0){
 					guessDisplay.setText("You Lose the game");
+					countdown.stop();
 					reset();
 				}
 			}
