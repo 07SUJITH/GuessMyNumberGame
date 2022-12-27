@@ -1,0 +1,29 @@
+
+To create a shortcut for a Java GUI application on your desktop,
+follow these steps:
+
+[1] right click on desktop select option new - shortcut
+
+[2] Enter " javaw GuessNumber " in the 
+    textfield( type the location of the item:    field)
+
+[3] click the next button
+
+[4] enter the name "GuessNumber" in the  
+    textField(type the name of the shortcut)
+
+[5]click the finish button
+
+[6]right click on the created select shortcut 
+  and select the property option
+
+[7] In the "Start in" field, add the full
+    path  to your Java application
+(eg: D:\GITHUB\GuessMyNumberGame\guessANumber\src)
+
+[8] click on the button ok
+
+[9] You can now use the shortcut on your
+    desktop to launch GuessNumber Java GUI  application. 
+    The shortcut will display the icon you selected.
+
