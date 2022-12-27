@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 import java.util.Random;
 import javax.swing.Timer;
 
-public class GuessNumber implements ActionListener{
+public class Control implements ActionListener{
 	JFrame jf;
 	JLabel guessDisplay;
 	JLabel timerDisplay;
@@ -31,7 +31,7 @@ public class GuessNumber implements ActionListener{
 	static int number;
 	int chances = 10, no_clue = 5, last_divisor=1, count=100;
     
-	public GuessNumber(){
+	public Control(){
 		Font myFont = new Font("Ink Free",Font.BOLD,15);
 		Color color =new Color(192,192,192);
         
@@ -177,7 +177,7 @@ public class GuessNumber implements ActionListener{
     public static void main(String[] args){
         Random random = new Random();
         number = random.nextInt(100) + 1;
-        new GuessNumber();
+        new Control();
     }
     public void reset(){
     	Random rand = new Random();
@@ -205,6 +205,7 @@ public class GuessNumber implements ActionListener{
 			try{
 				int guess = Integer.parseInt(inputDisplay);
 				chances -= 1;
+				System.out.println(chances);
 				if (guess == number) {
 			  		guessDisplay.setText("You guessed it! The number was "+number);
 			  		countdown.stop();
