@@ -38,7 +38,7 @@ public class GuessNumber implements ActionListener{
 		jf = new JFrame("Number Guess");
         jf.setSize(420,550);
         jf.setLayout(null);
-        jf.setLocation(0,0);
+        jf.setLocation(500,50);
 		ImageIcon image =new ImageIcon("logo2.jpg");
         jf.setIconImage(image.getImage());
         jf.getContentPane().setBackground(new Color(0,139,139));
